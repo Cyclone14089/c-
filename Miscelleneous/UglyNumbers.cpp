@@ -2,20 +2,22 @@
 
 using namespace std;
 
-int get_min(int x, int y) { return (x < y) ? x : y; }
+#define ull unsigned long long
 
-unsigned int get_Nth_UglyNumber(unsigned int n) { // using Dynamic Programming approach
+ull get_min(ull x, ull y) { return (x < y) ? x : y; }
 
-    unsigned int ugly[n];
+ull get_Nth_UglyNumber(unsigned int n) { // using Dynamic Programming approach
+
+    ull ugly[n];
     ugly[0] = 1;
 
     unsigned int i2 = 0, i3 = 0, i5 = 0;
-    unsigned int 
+    ull 
         nextMultiple2 = 2, 
         nextMultiple3 = 3, 
         nextMultiple5 = 5;
 
-    unsigned int nextUgly;
+    ull nextUgly;
 
     for (unsigned int i = 1; i < n; i++) {
 
@@ -39,7 +41,7 @@ unsigned int get_Nth_UglyNumber(unsigned int n) { // using Dynamic Programming a
             nextMultiple5 = ugly[i5] * 5;
         }
     } // end of for loop
-    
+
     return nextUgly;
 } // end of get_Nth_UglyNumber(unsigned int)
 
@@ -49,7 +51,7 @@ int main() {
     unsigned int n;
     scanf("%d", &n);
 
-    printf("The %dth ugly number is: %d\n", n, get_Nth_UglyNumber(n));
+    printf("The %dth ugly number is: %llu\n", n, get_Nth_UglyNumber(n));
 
     return 0;
 } // end of main()
