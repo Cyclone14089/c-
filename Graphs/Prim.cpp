@@ -3,6 +3,10 @@
 
 using namespace std;
 
+int get_id(char c) { return ((int)c - 65); }
+
+char get_char(int id) { return (char)(id + 65); }
+
 class Connection {
 
     public:
@@ -151,7 +155,7 @@ void display_minSpanTree(Connection *mst, int V) {
 
     for (int i = 1; i < V; i++) {
 
-        printf(" %d            %d              %d\n", mst[i].dst, i, mst[i].wgt);
+        printf(" %c            %c            %d\n", get_char(mst[i].dst), get_char(i), mst[i].wgt);
         sum += mst[i].wgt;
     }
 
@@ -163,13 +167,15 @@ Graph* create_graph(int V, int E) {
     Graph *g = new Graph(V);
 
     printf("Enter edges (source, destination, weight, respectively) :-\n");
-    int src, dst, wgt;
+    char src, dst;
+    int wgt;
 
     for (int i = 0; i < E; i++) {
 
         printf("%d Enter edge: ", (i + 1));
-        scanf("%d %d %d", &src, &dst, &wgt);
-        g->add_edge(src, dst, wgt);
+        cin >> src >> dst >> wgt;
+
+        g->add_edge(get_id(src), get_id(dst), wgt);
     }
 
     // g->add_edge(0, 1, 4);
