@@ -1,4 +1,5 @@
 #include<iostream>
+#include<list>
 
 using namespace std;
 
@@ -37,6 +38,35 @@ class Knapsack {
 		int value = items[0]->value;
 		for (int i = items[0]->weight; i <= capacity; i++) table[0][i] = value;
 	} // end of make_first_row()
+
+	list<Item*> *find_chosen_items() {
+
+			if (!is_table_made) return NULL;
+
+			list<Item*> *stack = new list<Item*>; // keep track of the chosen items
+
+			int remaining_capacity = capacity;
+			int j = remaining_capacity; // column index
+			int curr_value = table[N - 1][j];
+
+			for (int i = N - 2; i >= 0; i--) {
+
+				if (table[i][j] != curr_value) {
+
+					stack->push_back(items[i + 1]); // pushing item into stack
+
+					remaining_capacity -= (items[i + 1]->weight); // updating remaining capacity of knapsack
+					j = remaining_capacity; // updating column index
+					curr_value = table[i][j]; // updating current value
+				} // end of if block
+
+				if (!curr_value) break; // if current value == 0, there are no selected items left
+
+				if (i == 0) stack->push_back(items[0]); // if i == 0 and the loop hasn't terminated, 1st item is choosen
+			} // end of outer for loop
+
+			return stack;
+		} // end of find_chosen_items()
 
 	public: 
 		
@@ -154,6 +184,35 @@ class Knapsack {
 			return table[N - 1][capacity];
 		} // end of get_best_value()
 
+		void display_chosen_items() {
+
+			list<Item*> *stack = find_chosen_items();
+			Item *item;
+			int value, weight;
+
+			printf("\n");
+			printf("------------------\n");
+			printf("| Value | Weight |\n");
+			printf("------------------\n");
+
+			while (!stack->empty()) {
+
+				item = stack->back();
+				stack->pop_back();
+
+				value = item->value;
+				weight = item->weight;
+
+				if (value / 10) printf("|  %d   ", value);
+				else printf("|   %d   ", value);
+				printf("|");
+				if (weight / 10) printf("   %d   |\n", weight);
+				else printf("    %d   |\n", weight);
+
+				printf("------------------\n");
+			} // end of while loop
+		} // end of display_chosen_items()
+
 }; // end of class Knapsack
 
 Knapsack* create_knapsack() {
@@ -202,6 +261,9 @@ int main() {
 	knapsack->display_table();
 
 	printf("\nBest value: %d\n", best_value);
+
+	printf("\nChosen items:-");
+	knapsack->display_chosen_items();
 
 	return 0;
 } // end of main()
