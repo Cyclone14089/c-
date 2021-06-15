@@ -28,8 +28,6 @@ class Connection {
             this->wgt = wgt;
         } // end of parameterised constructor
 
-        ~Connection(); // declaring destructor
-
 }; // end of class Connection
 
 class Vertex {
