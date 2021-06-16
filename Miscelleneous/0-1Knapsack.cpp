@@ -1,5 +1,5 @@
 #include<iostream>
-#include<list>
+#include<stack>
 
 using namespace std;
 
@@ -39,11 +39,11 @@ class Knapsack {
 		for (int i = items[0]->weight; i <= capacity; i++) table[0][i] = value;
 	} // end of make_first_row()
 
-	list<Item*> *find_chosen_items() {
+	stack<Item*> *find_chosen_items() {
 
 			if (!is_table_made) return NULL;
 
-			list<Item*> *stack = new list<Item*>; // keep track of the chosen items
+			stack<Item*> *chosen_items = new stack<Item*>; // keep track of the chosen items
 
 			int remaining_capacity = capacity;
 			int j = remaining_capacity; // column index
@@ -53,7 +53,7 @@ class Knapsack {
 
 				if (table[i][j] != curr_value) {
 
-					stack->push_back(items[i + 1]); // pushing item into stack
+					chosen_items->push(items[i + 1]); // pushing item into stack
 
 					remaining_capacity -= (items[i + 1]->weight); // updating remaining capacity of knapsack
 					j = remaining_capacity; // updating column index
@@ -62,10 +62,10 @@ class Knapsack {
 
 				if (!curr_value) break; // if current value == 0, there are no selected items left
 
-				if (i == 0) stack->push_back(items[0]); // if i == 0 and the loop hasn't terminated, 1st item is choosen
+				if (i == 0) chosen_items->push(items[0]); // if i == 0 and the loop hasn't terminated, 1st item is choosen
 			} // end of outer for loop
 
-			return stack;
+			return chosen_items;
 		} // end of find_chosen_items()
 
 	public: 
@@ -186,7 +186,7 @@ class Knapsack {
 
 		void display_chosen_items() {
 
-			list<Item*> *stack = find_chosen_items();
+			stack<Item*> *chosen_items = find_chosen_items();
 			Item *item;
 			int value, weight;
 
@@ -195,10 +195,10 @@ class Knapsack {
 			printf("| Value | Weight |\n");
 			printf("------------------\n");
 
-			while (!stack->empty()) {
+			while (!chosen_items->empty()) {
 
-				item = stack->back();
-				stack->pop_back();
+				item = chosen_items->top();
+				chosen_items->pop();
 
 				value = item->value;
 				weight = item->weight;
