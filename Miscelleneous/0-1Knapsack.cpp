@@ -131,30 +131,6 @@ class Knapsack {
 			} // end of outer for loop
 		} // end of display_table()
 
-		void sort_items_weight() {
-
-			int flag;
-			Item *temp;
-
-			for (int i = 0; i < N - 1; i++) {
-
-				flag = 0;
-				for (int j = 0; j < N - i - 1; j++) {
-
-					if ((items[j]->weight) > (items[j + 1]->weight)) {
-
-						flag = 1;
-
-						temp = items[j];
-						items[j] = items[j + 1];
-						items[j + 1] = temp;
-					}
-				} // end of inner for loop
-
-				if (!flag) break;
-			} // end of outer for loop
-		} // end of sort_items_weight()
-
 		void make_table() {
 
 			make_first_row();
@@ -249,8 +225,6 @@ int main() {
 	
 	printf("\nThe items are:-\n");
 	knapsack->list_items();
-	
-	knapsack->sort_items_weight();
 
 	printf("\nThe items after sorting are:-\n");
 	knapsack->list_items();
